@@ -65,6 +65,7 @@ const InlineDateFilter: React.FC<InlineDateFilterProps> = ({
     if (!isDateInRange(from)) return;
 
     if (!range.to) {
+      // Single-day selection: store as from/to same day
       setDateRange({ from, to: from });
       onSelect(format(from, 'yyyy-MM-dd'));
     } else {
@@ -91,10 +92,6 @@ const InlineDateFilter: React.FC<InlineDateFilterProps> = ({
     ? `${format(dateRange.from, 'MMM dd')} - ${format(dateRange.to, 'MMM dd')}`
     : '';
 
-  // Check if it's a single date selection (from and to are the same)
-  const isSingleDate = dateRange?.from && dateRange?.to && 
-    dateRange.from.getTime() === dateRange.to.getTime();
-
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -119,9 +116,8 @@ const InlineDateFilter: React.FC<InlineDateFilterProps> = ({
               classNames={{
                 day_today: "!bg-accent/20 !text-white",
                 day_selected: "!bg-white !text-black",
-                // Single date gets full rounding, range gets proper edge rounding
-                day_range_start: isSingleDate ? "!bg-white !text-black !rounded-[10px]" : "!bg-white !text-black !rounded-l-full !rounded-r-none",
-                day_range_end: isSingleDate ? "!bg-white !text-black !rounded-[10px]" : "!bg-white !text-black !rounded-r-full !rounded-l-none",
+                day_range_start: "!bg-white !text-black",
+                day_range_end: "!bg-white !text-black",
                 day_range_middle: "!bg-white !text-black !rounded-none",
               }}
             />
