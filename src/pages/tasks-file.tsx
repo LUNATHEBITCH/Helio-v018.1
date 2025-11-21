@@ -290,6 +290,19 @@ const Tasks = () => {
   const applyFiltersAndSort = (tasksToFilter: Task[]): Task[] => {
     let filtered = [...tasksToFilter];
 
+    // Helper function to parse DD/MM/YYYY format
+    const parseDate = (dateString: string): Date => {
+      const parts = dateString.split('/');
+      if (parts.length === 3) {
+        // DD/MM/YYYY format
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // months are 0-indexed
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+      return new Date(dateString);
+    };
+
     // Date filtering with presets
     if (filterSettings.date && filterValues.date && filterValues.date !== 'All' && filterValues.date !== '') {
       const today = new Date();
@@ -297,7 +310,7 @@ const Tasks = () => {
       
       filtered = filtered.filter(task => {
         if (!task.dueDate) return false;
-        const taskDate = new Date(task.dueDate);
+        const taskDate = parseDate(task.dueDate);
         taskDate.setHours(0, 0, 0, 0);
         
         switch (filterValues.date) {
