@@ -487,8 +487,13 @@ const Tasks = () => {
             {/* Expandable content - positioned below the main section */}
             {isSectionExpanded && (
               <div className="bg-transparent max-w-[980px]" style={{ marginBottom: '45px' }}>
+                {/* Edit mode overlay */}
+                {editingTaskId && (
+                  <div className="fixed inset-0 bg-black/50 z-40"></div>
+                )}
+
                 {/* Card-based task list */}
-                <div className="space-y-3">
+                <div className="space-y-3 relative z-0">
                   {sortSettings.creationDate ? (
                     getTasksByDateGroup(applyFiltersAndSort(tasks)).map((group) => (
                       <div key={group.date}>
@@ -497,7 +502,7 @@ const Tasks = () => {
                         </div>
                         {group.tasks.map((task) => (
                           editingTaskId === task.id ? (
-                            <div key={task.id} className="p-4 bg-transparent border border-[#525252] rounded-[20px] min-h-[160px] relative z-10 overflow-visible mt-4">
+                            <div key={task.id} className="p-4 bg-transparent border border-[#525252] rounded-[20px] min-h-[160px] relative z-50 overflow-visible mt-4">
                               {/* Section 1: Title */}
                               <div className="mb-2">
                                 <Input
@@ -613,7 +618,7 @@ const Tasks = () => {
                   ) : (
                     applyFiltersAndSort(tasks).map((task) => (
                       editingTaskId === task.id ? (
-                        <div key={task.id} className="p-4 bg-transparent border border-[#525252] rounded-[20px] min-h-[160px] relative z-10 overflow-visible mt-4">
+                        <div key={task.id} className="p-4 bg-transparent border border-[#525252] rounded-[20px] min-h-[160px] relative z-50 overflow-visible mt-4">
                           {/* Section 1: Title */}
                           <div className="mb-2">
                             <Input
@@ -729,7 +734,7 @@ const Tasks = () => {
               
                 {/* Add New Task Input */}
                 {isAddingTask && (
-                  <div className="p-4 bg-transparent border border-[#525252] rounded-[20px] min-h-[160px] relative z-10 overflow-visible mt-4">
+                  <div className="p-4 bg-transparent border border-[#525252] rounded-[20px] min-h-[160px] relative z-50 overflow-visible mt-4">
                     {/* Section 1: Title */}
                     <div className="mb-2">
                       <Input
