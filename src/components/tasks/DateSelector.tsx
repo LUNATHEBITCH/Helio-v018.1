@@ -16,11 +16,14 @@ interface DateSelectorProps {
 
 const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelect, onTimeSelect, selectedRepeat = '', onRepeatSelect }) => {
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(
-    selectedDate ? format(selectedDate, "MMM dd, yyyy") : ""
-  );
+  const [inputValue, setInputValue] = useState(() => {
+    if (selectedDate && isValid(selectedDate)) {
+      return format(selectedDate, "MMM dd, yyyy");
+    }
+    return "";
+  });
   const [activeButton, setActiveButton] = useState<string | null>(null);
-  const [displayMonth, setDisplayMonth] = useState<Date>(selectedDate || new Date());
+  const [displayMonth, setDisplayMonth] = useState<Date>((selectedDate && isValid(selectedDate)) ? selectedDate : new Date());
   const [parsedDate, setParsedDate] = useState<Date | null>(null);
   const [timePopoverOpen, setTimePopoverOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState<string>("");
@@ -31,7 +34,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onSelect, onT
   const [repeatClicked, setRepeatClicked] = useState(false);
   const [repeatAnimating, setRepeatAnimating] = useState(false);
   const [showDateConfirmation, setShowDateConfirmation] = useState(false);
-  const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(selectedDate);
+  const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>((selectedDate && isValid(selectedDate)) ? selectedDate : undefined);
   const [repeatPopoverOpen, setRepeatPopoverOpen] = useState(false);
   const [repeatOption, setRepeatOption] = useState<string>("");
   const [repeatEndDate, setRepeatEndDate] = useState<Date | undefined>();
